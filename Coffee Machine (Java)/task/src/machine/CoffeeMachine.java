@@ -3,98 +3,224 @@ package machine;
 import java.util.Scanner;
 
 public class CoffeeMachine {
-    // Prepare messages
-    protected static String msgStart = "Starting to make a coffee\n";
-    protected static String msgGrind = "Grinding coffee beans\n";
-    protected static String msgBoil = "Boiling water\n";
-    protected static String msgMix = "Mixing boiled water with crushed coffee beans\n";
-    protected static String msgPourCoffee = "Pouring coffee into the cup\n";
-    protected static String msgPourMilk = "Pouring some milk into the cup\n";
-    protected static String msgReady = "Coffee is ready!\n";
-
-    public static Scanner scanner = new Scanner(System.in);
-
-    protected static int waterPerCupInmL = 200;
-    protected static int milkPerCupInmL = 50;
-    protected static int coffeeBeansPerCupInGrams = 15;
-
-    protected static int waterCapacityOfCoffeeMachine;
-    protected static int milkCapacityOfCoffeeMachine;
-    protected static int coffeeBeansCapacityOfCoffeeMachine;
-    protected static int cupsOfCoffeeNeeded;
-
-    protected static int waterNeededInmL;
-    protected static int milkNeededInmL;
-    protected static int coffeeBeansNeededInGrams;
-
-    protected static boolean enoughWaterInMachine;
-    protected static boolean enoughMilkInMachine;
-    protected static boolean enoughCoffeeBeansInMachine;
-
-    protected static int cupsPossibleGivenWater;
-    protected static int cupsPossibleGivenMilk;
-    protected static int cupsPossibleGivenCoffeeBeans;
-    protected static int mostCupsGivenIngredients;
-
 
     public static void main(String[] args) {
+        CoffeeMachine tryThis = new CoffeeMachine();
+    }
 
-/*
-                System.out.print(
-                "\n" +
-                msgStart +
-                msgGrind +
-                msgBoil +
-                msgMix +
-                msgPourCoffee +
-                msgPourMilk +
-                msgReady
-        );
+    int cashBalance;
+    int machineWaterInmL;
+    int machineMilkInmL;
+    int machineCoffeeBeansInGrams;
+    int machineDisposableCups;
 
-*/
+    Scanner scanner = new Scanner(System.in);
 
-/*
+    String userAction;
+    String buying;
 
-        System.out.println("For " + cupsOfCoffeeNeeded + " cups of coffee you will need:");
-        System.out.println(cupsOfCoffeeNeeded * waterPerCupInmL + " mL of water");
-        System.out.println(cupsOfCoffeeNeeded * milkPerCupInmL + " mL of milk");
-        System.out.println(cupsOfCoffeeNeeded * coffeeBeansInGrams + " g of coffee beans");
+    public int getCashBalance() {
+        return cashBalance;
+    }
 
-*/
+    public int getMachineWaterInmL() {
+        return machineWaterInmL;
+    }
 
-        System.out.println("Write how many ml of water the coffee machine has:");
-        waterCapacityOfCoffeeMachine = scanner.nextInt();
-        System.out.println("Write how many ml of milk the coffee machine has:");
-        milkCapacityOfCoffeeMachine = scanner.nextInt();
-        System.out.println("Write how many grams of coffee beans the coffee machine has:");
-        coffeeBeansCapacityOfCoffeeMachine = scanner.nextInt();
-        System.out.println("Write how many cups of coffee you will need:");
-        cupsOfCoffeeNeeded = scanner.nextInt();
+    public int getMachineMilkInmL() {
+        return machineMilkInmL;
+    }
 
-        // Check if enough ingredients are available, based on cups of coffee needed
-        waterNeededInmL = cupsOfCoffeeNeeded * waterPerCupInmL;
-        milkNeededInmL = cupsOfCoffeeNeeded * milkPerCupInmL;
-        coffeeBeansNeededInGrams = cupsOfCoffeeNeeded * coffeeBeansPerCupInGrams;
+    public int getMachineCoffeeBeansInGrams() {
+        return machineCoffeeBeansInGrams;
+    }
 
-        enoughWaterInMachine = waterCapacityOfCoffeeMachine - waterNeededInmL > 0;
-        enoughMilkInMachine = milkCapacityOfCoffeeMachine - milkNeededInmL > 0;
-        enoughCoffeeBeansInMachine = coffeeBeansCapacityOfCoffeeMachine - coffeeBeansNeededInGrams > 0;
+    public int getMachineDisposableCups() {
+        return machineDisposableCups;
+    }
 
-        // Check how many cups of coffee can be made with current Coffee Machine capacity
-        cupsPossibleGivenWater = waterCapacityOfCoffeeMachine / waterPerCupInmL;
-        cupsPossibleGivenMilk = milkCapacityOfCoffeeMachine / milkPerCupInmL;
-        cupsPossibleGivenCoffeeBeans = coffeeBeansCapacityOfCoffeeMachine / coffeeBeansPerCupInGrams;
+    public void setCashBalance(int cashBalance) {
+        this.cashBalance = cashBalance;
+    }
 
-        mostCupsGivenIngredients = Math.min(cupsPossibleGivenWater,
-                Math.min(cupsPossibleGivenMilk, cupsPossibleGivenCoffeeBeans));
+    public void setMachineWaterInmL(int machineWaterInmL) {
+        this.machineWaterInmL = machineWaterInmL;
+    }
 
-        if (mostCupsGivenIngredients > cupsOfCoffeeNeeded) {
-            System.out.print("Yes, I can make that amount of coffee (and even ");
-            System.out.println(mostCupsGivenIngredients - cupsOfCoffeeNeeded + " more than that)");
-        } else if (mostCupsGivenIngredients == cupsOfCoffeeNeeded) {
-            System.out.println("Yes, I can make that amount of coffee");
-        } else {
-            System.out.println("No, I can only make " + mostCupsGivenIngredients + " cup(s) of coffee");
+    public void setMachineMilkInmL(int machineMilkInmL) {
+        this.machineMilkInmL = machineMilkInmL;
+    }
+
+    public void setMachineCoffeeBeansInGrams(int machineCoffeeBeansInGrams) {
+        this.machineCoffeeBeansInGrams = machineCoffeeBeansInGrams;
+    }
+
+    public void setMachineDisposableCups(int machineDisposableCups) {
+        this.machineDisposableCups = machineDisposableCups;
+    }
+    public void buyFromMachine(String buying) {
+        switch (buying) {
+            case "1" -> { // espresso
+                if (!canMakeEspresso()) {
+                    outOfSomething("1");
+                } else {
+                    System.out.println("I have enough resources, making you a coffee!");
+                    setMachineWaterInmL(getMachineWaterInmL() - 250);
+                    setMachineCoffeeBeansInGrams(getMachineCoffeeBeansInGrams() - 16);
+                    setMachineDisposableCups(getMachineDisposableCups() - 1);
+                    setCashBalance(getCashBalance() + 4);
+                }
+            }
+            case "2" -> { // latte
+                if (!canMakeLatte()) {
+                    outOfSomething("2");
+                } else {
+                    System.out.println("I have enough resources, making you a coffee!");
+                    setMachineWaterInmL(getMachineWaterInmL() - 350);
+                    setMachineMilkInmL(getMachineMilkInmL() - 75);
+                    setMachineCoffeeBeansInGrams(getMachineCoffeeBeansInGrams() - 20);
+                    setMachineDisposableCups(getMachineDisposableCups() - 1);
+                    setCashBalance(getCashBalance() + 7);
+                }
+            }
+            case "3" -> { // cappuccino
+                if(!canMakeCappuccino()) {
+                    outOfSomething("3");
+                } else {
+                    System.out.println("I have enough resources, making you a coffee!");
+                    setMachineWaterInmL(getMachineWaterInmL() - 200);
+                    setMachineMilkInmL(getMachineMilkInmL() - 100);
+                    setMachineCoffeeBeansInGrams(getMachineCoffeeBeansInGrams() - 12);
+                    setMachineDisposableCups(getMachineDisposableCups() - 1);
+                    setCashBalance(getCashBalance() + 6);
+                }
+            }
+            case "back" -> { // no action taken here
+            }
         }
     }
+
+
+    public boolean canMakeEspresso() {
+        return getMachineWaterInmL() >= 250 &&
+                getMachineCoffeeBeansInGrams() >= 16 &&
+                getMachineDisposableCups() >= 1;
+    }
+
+    public boolean canMakeLatte() {
+        return getMachineWaterInmL() >= 350 &&
+                getMachineMilkInmL() >= 75 &&
+                getMachineCoffeeBeansInGrams() >= 20 &&
+                getMachineDisposableCups() >= 1;
+    }
+
+    public boolean canMakeCappuccino() {
+        return  getMachineWaterInmL() >= 200 &&
+                getMachineMilkInmL() >= 100 &&
+                getMachineCoffeeBeansInGrams() >= 12 &&
+                getMachineDisposableCups() >= 1;
+    }
+
+    public void outOfSomething(String drinkType) {
+        String whatIsMissing = "";
+        switch (drinkType) {
+            case "1" -> { // espresso
+                if (getMachineWaterInmL() < 250) {
+                    whatIsMissing = "water!";
+                } else if (getMachineCoffeeBeansInGrams() < 16) {
+                    whatIsMissing = "coffee beans!";
+                } else whatIsMissing = "cups!";
+            }
+            case "2" -> { // latte
+                if (getMachineWaterInmL() < 350) {
+                    whatIsMissing = "water!";
+                } else if (getMachineMilkInmL() < 75) {
+                    whatIsMissing = "milk!";
+                } else if (getMachineCoffeeBeansInGrams() < 16) {
+                    whatIsMissing = "coffee beans!";
+                } else whatIsMissing = "cups!";
+            }
+            case "3" -> { // cappuccino
+                if (getMachineWaterInmL() < 200) {
+                    whatIsMissing = "water!";
+                } else if (getMachineMilkInmL() < 100) {
+                    whatIsMissing = "milk!";
+                } else if (getMachineCoffeeBeansInGrams() < 12) {
+                    whatIsMissing = "coffee beans!";
+                } else whatIsMissing = "cups!";
+            }
+        }
+        System.out.print("Sorry, not enough ");
+        System.out.println(whatIsMissing);
+    }
+
+    public void fillMachine() {
+        System.out.println("Write how many ml of water you want to add:");
+        setMachineWaterInmL(getMachineWaterInmL()
+                + scanner.nextInt());
+        System.out.println("Write how many ml of milk you want to add:");
+        setMachineMilkInmL(getMachineMilkInmL()
+                + scanner.nextInt());
+        System.out.println("Write how many grams of coffee beans you want to add:");
+        setMachineCoffeeBeansInGrams(getMachineCoffeeBeansInGrams() +
+                scanner.nextInt());
+        System.out.println("Write how many disposable cups you want to add:");
+        setMachineDisposableCups(getMachineDisposableCups() +
+                scanner.nextInt());
+    }
+
+    public void takeFromMachine() {
+                System.out.println("I gave you $" + getCashBalance());
+                setCashBalance(0);
+    }
+
+    public void printMachineState() {
+        System.out.println("The coffee machine has:");
+        System.out.println(getMachineWaterInmL() + " ml of water");
+        System.out.println(getMachineMilkInmL() + " ml of milk");
+        System.out.println(getMachineCoffeeBeansInGrams() + " g of coffee beans");
+        System.out.println(getMachineDisposableCups() + " disposable cups");
+        System.out.println("$" + getCashBalance() + " of money");
+    }
+
+    public void userInterface() {
+        while (true) {
+            System.out.println("Write action (buy, fill, take, remaining, exit)");
+            String userAction = scanner.next();
+            switch (userAction) {
+                case "buy" -> {
+                    System.out.print("What do you want to buy? ");
+                    System.out.print("1 - espresso, 2 - latte, ");
+                    System.out.println("3 - cappuccino, back - to main menu:");
+                    buyFromMachine(scanner.next());
+                }
+                case "fill" -> {
+                    fillMachine();
+                }
+                case "take" -> {
+                    takeFromMachine();
+                }
+                case "exit" -> {
+                    System.exit(0);
+                }
+                case "remaining" -> {
+                    printMachineState();
+                }
+            }
+        }
+    }
+
+    private void initCoffeeMachine() {
+        machineWaterInmL = 400;
+        machineMilkInmL = 540;
+        machineCoffeeBeansInGrams = 120;
+        machineDisposableCups = 9;
+        cashBalance = 550;
+    }
+
+    public CoffeeMachine() {
+        initCoffeeMachine();
+        userInterface();
+    }
 }
+
